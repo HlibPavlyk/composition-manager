@@ -41,6 +41,17 @@ public abstract class MusicComposition {
         return style;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Check if it's the same reference
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        MusicComposition that = (MusicComposition) obj;
+
+        // Compare fields for equality
+        return title.equals(that.title) && duration == that.duration && style.equals(that.style);
+    }
+
     /**
      * Abstract method to play the composition.
      */
