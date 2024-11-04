@@ -43,7 +43,7 @@ Based on **C13**, determine the assignment variant:
 If the project is hosted on GitHub, clone it using:
 
 ```bash
-git clone https://github.com/yourusername/music-album-management.git
+git clone https://github.com/HlibPavlyk/composition-manager.git
 cd music-album-management/src
 ```
 
