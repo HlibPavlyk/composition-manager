@@ -3,53 +3,87 @@ import compositions.JazzPiece;
 import compositions.MusicComposition;
 import compositions.RockSong;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Demonstrates the functionality of the Album and MusicComposition classes.
+ * Demonstrates the functionality of the MusicCompositionList and MusicComposition classes.
  */
 public class Main {
     public static void main(String[] args) {
         try {
-            Album album = new Album();
+            // Create an empty MusicCompositionList
+            MusicCompositionList compositionList = new MusicCompositionList();
 
-            // Adding compositions to the album
-            album.addComposition(new RockSong("Rock Anthem", 300));
-            album.addComposition(new JazzPiece("Smooth Jazz", 250));
-            album.addComposition(new ClassicalPiece("Symphony No.5", 600));
-            album.addComposition(new RockSong("Rock Ballad", 200));
-            album.addComposition(new JazzPiece("Jazz Fusion", 400));
+            // Add compositions to the list using the add method
+            compositionList.add(new RockSong("Rock Anthem", 300));
+            compositionList.add(new JazzPiece("Smooth Jazz", 250));
+            compositionList.add(new ClassicalPiece("Symphony No.5", 600));
 
-            // Calculate total duration of the album
-            int totalDuration = album.calculateTotalDuration();
-            System.out.println("Total album duration: " + totalDuration + " seconds.\n");
+            // Create a MusicCompositionList with a single composition
+            MusicComposition singleComposition = new RockSong("Rock Ballad", 200);
+            MusicCompositionList singleCompositionList = new MusicCompositionList(singleComposition);
 
-            // Sort compositions by style
-            album.sortCompositionsByStyle();
-            System.out.println("Compositions sorted by style:");
-            for (MusicComposition comp : album.getCompositions()) {
+            // Create a standard collection of compositions
+            List<MusicComposition> standardList = new ArrayList<>();
+            standardList.add(new JazzPiece("Jazz Fusion", 400));
+            standardList.add(new ClassicalPiece("Piano Sonata No.16", 500));
+
+            // Create a MusicCompositionList from a standard collection
+            MusicCompositionList collectionCompositionList = new MusicCompositionList(standardList);
+
+            // Combine all compositions into one list
+            compositionList.addAll(singleCompositionList);
+            compositionList.addAll(collectionCompositionList);
+
+            // Display all compositions
+            System.out.println("All compositions in the list:");
+            for (MusicComposition comp : compositionList) {
+                System.out.println(comp.getStyle() + ": " + comp.getTitle() + " (" + comp.getDuration() + " seconds)");
+            }
+            System.out.println();
+
+            // Calculate total duration
+            int totalDuration = 0;
+            for (MusicComposition comp : compositionList) {
+                totalDuration += comp.getDuration();
+            }
+            System.out.println("Total duration of compositions in the list: " + totalDuration + " seconds");
+
+            System.out.println();
+
+            // Remove a composition
+            compositionList.remove(singleComposition);
+            System.out.println("After removing " + singleComposition.getTitle() + ":");
+            for (MusicComposition comp : compositionList) {
                 System.out.println(comp.getStyle() + ": " + comp.getTitle());
             }
             System.out.println();
 
-            // Find compositions within a duration range
-            int minDuration = 200;
-            int maxDuration = 500;
-            List<MusicComposition> foundCompositions = album.findCompositionsByDurationRange(minDuration, maxDuration);
-            System.out.println("Compositions between " + minDuration + " and " + maxDuration + " seconds:");
-            for (MusicComposition comp : foundCompositions) {
-                System.out.println(comp.getTitle() + " - " + comp.getDuration() + " seconds (" + comp.getStyle() + ")");
+            // Check if the list contains a composition
+            MusicComposition searchComposition = new ClassicalPiece("Symphony No.5", 600);
+            boolean contains = compositionList.contains(searchComposition);
+            System.out.println("List contains '" + searchComposition.getTitle() + "': " + contains);
+            System.out.println();
+
+            // Get composition at index
+            int index = 2;
+            MusicComposition compAtIndex = compositionList.get(index);
+            System.out.println("Composition at index " + index + ": " + compAtIndex.getTitle());
+            System.out.println();
+
+            // Set composition at index
+            compositionList.set(index, new RockSong("New Rock Song", 350));
+            System.out.println("After setting a new composition at index " + index + ":");
+            for (MusicComposition comp : compositionList) {
+                System.out.println(comp.getStyle() + ": " + comp.getTitle());
             }
             System.out.println();
 
-            // Playing all compositions
-            System.out.println("Playing all compositions:");
-            for (MusicComposition comp : album.getCompositions()) {
-                comp.play();
-            }
-
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Index Error: " + e.getMessage());
         } catch (Exception e) {
             // Catching any other unforeseen exceptions
             System.err.println("An unexpected error occurred: " + e.getMessage());
